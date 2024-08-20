@@ -1,0 +1,48 @@
+-- Crear tabla de Autores
+CREATE TABLE Autores (
+    AutorID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    Nacionalidad VARCHAR(50)
+);
+
+-- Crear tabla de Libros
+CREATE TABLE Libros (
+    LibroID INT PRIMARY KEY AUTO_INCREMENT,
+    Titulo VARCHAR(200) NOT NULL,
+    AutorID INT,
+    FechaPublicacion DATE,
+    Genero VARCHAR(50),
+    FOREIGN KEY (AutorID) REFERENCES Autores(AutorID)
+);
+
+-- Crear tabla de Usuarios
+CREATE TABLE Usuarios (
+    UsuarioID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Crear tabla de Préstamos
+CREATE TABLE Prestamos (
+    PrestamoID INT PRIMARY KEY AUTO_INCREMENT,
+    LibroID INT,
+    UsuarioID INT,
+    FechaPrestamo DATE,
+    FechaDevolucion DATE,
+    FOREIGN KEY (LibroID) REFERENCES Libros(LibroID),
+    FOREIGN KEY (UsuarioID) REFERENCES Usuarios(UsuarioID)
+);
+
+-- Crear tabla de Multas
+CREATE TABLE Multas (
+    MultaID INT PRIMARY KEY AUTO_INCREMENT,
+    UsuarioID INT,
+    PrestamoID INT,
+    Monto DECIMAL(10, 2) NOT NULL,
+    FechaMulta DATE NOT NULL,
+    Pagada BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (UsuarioID) REFERENCES Usuarios(UsuarioID),
+    FOREIGN KEY (PrestamoID) REFERENCES Prestamos(PrestamoID)
+);
